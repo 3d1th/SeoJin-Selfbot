@@ -1,7 +1,11 @@
 import { Client } from 'discord.js-selfbot-v13';
-import { notify, success, warning, danger } from './func/logfunc.js';
+import { success, warning, danger } from './func/logfunc.js';
 import { promises as fs } from 'fs';
 import path from 'path';
+import chalk from 'chalk';
+
+import { handleCommand as handlePingCommand } from './kommand/ping.js'; 
+import { handleCommand as handleWebhookCommand } from './kommand/webhook.js';
 
 const configPath = './config.json';
 
@@ -17,7 +21,7 @@ async function loadConfig() {
                 prefix: '$'
             };
             await fs.writeFile(configPath, JSON.stringify(defaultConfig, null, 2), 'utf-8');
-            warning('config.json 파일이 생성되었습니다. 토큰을 추가하세요.');
+            warning('The config.json file has been created. Add your token.');
             return defaultConfig;
         } else {
             throw err;
@@ -30,31 +34,47 @@ async function startBot() {
     const { token, prefix } = config;
 
     if (!token) {
-        danger('토큰이 설정되지 않았습니다. config.json 파일에서 토큰을 입력하세요.');
+        danger('Token not set. Enter the token in the config.json file.');
         process.exit(1);
     }
 
     const client = new Client();
 
     client.on('ready', () => {
-        success(`${client.user.username} 로그인됨`);
+        console.clear();
+        console.log(chalk.red(`
+
+            ███████╗███████╗ ██████╗      ██╗██╗███╗   ██╗    
+            ██╔════╝██╔════╝██╔═══██╗     ██║██║████╗  ██║    
+            ███████╗█████╗  ██║   ██║     ██║██║██╔██╗ ██║    
+            ╚════██║██╔══╝  ██║   ██║██   ██║██║██║╚██╗██║    
+            ███████║███████╗╚██████╔╝╚█████╔╝██║██║ ╚████║    
+            ╚══════╝╚══════╝ ╚═════╝  ╚════╝ ╚═╝╚═╝  ╚═══╝    
+
+            AKA: Sang-Il-Dong Anal Masturbation
+`));
+
+        console.log(`  Status: ` + chalk.green(`Connected`));
+        console.log(`  Account: ${client.user.username}`);
+        console.log(`  Prefix: ${config.prefix}\n`);
+
+        console.log(chalk.white('----------------------------------------------------------------------\n'));
+        success(`${client.user.username} logged in`);
     });
 
     client.on('messageCreate', async message => {
-        if (message.content === `${prefix}ping`) {
-            await message.channel.send('Pong!');
-            notify('Ping 명령어 실행됨');
-        }
+        await handlePingCommand(client, message, prefix);  // 명령어 처리
+        await handleWebhookCommand(client, message, prefix);
     });
 
     try {
         await client.login(token);
     } catch (error) {
         if (error.message.includes('TOKEN_INVALID')) {
-            danger('로그인 실패: 유효하지 않은 토큰입니다. config.json 파일에서 올바른 토큰을 입력하세요.');
+            danger('Login failed: Invalid token. Enter the correct token in your config.json file.');
             process.exit(1);
         } else {
-            danger(`로그인 실패: ${error.message}`);
+            danger(`Login failed: ${error.message}`);
             process.exit(1);
         }
     }
