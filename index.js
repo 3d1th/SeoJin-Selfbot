@@ -3,11 +3,12 @@ import { success, warning, danger } from './func/logfunc.js';
 import { promises as fs } from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-
+import Toast from './func/toast.js';
 import { handleCommand as handlePingCommand } from './kommand/ping.js'; 
 import { handleCommand as handleWebhookCommand } from './kommand/webhook.js';
 
 const configPath = './config.json';
+const toast = new Toast();
 
 async function loadConfig() {
     try {
@@ -60,6 +61,7 @@ async function startBot() {
 
         console.log(chalk.white('----------------------------------------------------------------------\n'));
         success(`${client.user.username} logged in`);
+        toast.show('logged as ', `${client.user.username} is now online.`);
     });
 
     client.on('messageCreate', async message => {

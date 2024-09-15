@@ -1,6 +1,6 @@
 import { notify, danger } from '../func/logfunc.js';
 import clipboardy from 'clipboardy';
-import Toast from '../func/toast.js'; 
+import Toast from '../func/toast.js';
 
 const toast = new Toast();
 
@@ -25,13 +25,11 @@ export async function handleCommand(client, message, prefix) {
             if (error.code === 50013) {
                 const errorMessage = '❌ You do not have permission to create a webhook.';
                 danger(errorMessage);
-                const msg = await message.channel.send(errorMessage);
-                setTimeout(() => msg.delete(), 5000);
+                await message.channel.send(errorMessage);
             } else {
                 const errorMessage = `❌ An error occurred while creating the webhook: ${error.message}`;
                 danger(errorMessage);
-                const msg = await message.channel.send(errorMessage);
-                setTimeout(() => msg.delete(), 5000);
+                await message.channel.send(errorMessage);
             }
         }
     }

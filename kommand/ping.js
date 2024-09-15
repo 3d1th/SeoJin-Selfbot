@@ -8,7 +8,6 @@ export async function handleCommand(client, message, prefix) {
         const ping = Math.round(client.ws.ping);
 
         await message.channel.send(`🏓 Pong! 현재 핑: ${ping}ms`);
-
         notify('used ping command');
     }
 }
