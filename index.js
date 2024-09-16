@@ -6,6 +6,8 @@ import chalk from 'chalk';
 import Toast from './func/toast.js';
 import { handleCommand as handlePingCommand } from './kommand/ping.js'; 
 import { handleCommand as handleWebhookCommand } from './kommand/webhook.js';
+import { setupSpy } from './func/spy.js';
+import player from 'node-wav-player';
 
 const configPath = './config.json';
 const toast = new Toast();
@@ -41,7 +43,7 @@ async function startBot() {
 
     const client = new Client();
 
-    client.on('ready', () => {
+    client.on('ready', async () => {
         console.clear();
         console.log(chalk.red(`
 
@@ -58,10 +60,20 @@ async function startBot() {
         console.log(`  Status: ` + chalk.green(`Connected`));
         console.log(`  Account: ${client.user.username}`);
         console.log(`  Prefix: ${config.prefix}\n`);
-
+        
         console.log(chalk.white('----------------------------------------------------------------------\n'));
         success(`${client.user.username} logged in`);
         toast.show('logged as ', `${client.user.username} is now online.`);
+
+        try {
+            await player.play({
+                path: './sounds/login.wav',
+            });
+        } catch (error) {
+            danger('Failed to play sound.');
+        }
+        
+        setupSpy(client);
     });
 
     client.on('messageCreate', async message => {
