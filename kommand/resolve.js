@@ -7,7 +7,7 @@ export async function resolveServer(client, message, prefix) {
 
         const args = message.content.split(' ');
         if (args.length < 2) {
-            await message.channel.send('```ini\n[ Seojin ]\n\nPlease provide a domain. Usage: ${prefix}resolve <domain>\n```');
+            await message.channel.send('```ini\n[ Seojin ]\n\nPlease provide a domain. Usage: ${prefix}resolve <domain>\n\n[ https://github.com/3d1th ]```');
             rog('resolve command failed: no domain provided');
             return;
         }
@@ -16,7 +16,7 @@ export async function resolveServer(client, message, prefix) {
         const validDomainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
 
         if (!validDomainRegex.test(domain)) {
-            await message.channel.send(`\`\`\`ini\n[ Seojin ]\n\n"${domain}" is not a valid domain. Usage: ${prefix}resolve <valid_domain>\n\`\`\``);
+            await message.channel.send(`\`\`\`ini\n[ Seojin ]\n\n"${domain}" is not a valid domain. Usage: ${prefix}resolve <valid_domain>\n\n[ https://github.com/3d1th ]\`\`\``);
             rog(`resolve command failed: invalid domain "${domain}"`);
             return;
         }
@@ -28,7 +28,7 @@ export async function resolveServer(client, message, prefix) {
             const data = response.data;
 
             if (!data || !data.online) {
-                await message.channel.send(`\`\`\`ini\n[ Seojin ]\n\n${domain} server is offline.\n\`\`\``);
+                await message.channel.send(`\`\`\`ini\n[ Seojin ]\n\n${domain} server is offline.\n\n[ https://github.com/3d1th ]\`\`\``);
                 rog(`resolve command used: ${domain} is offline`);
                 return;
             }
@@ -45,7 +45,7 @@ Players: ${data.players.online}/${data.players.max}
             await message.channel.send(serverInfo);
             rog(`Resolved server info for: ${domain}`);
         } catch (error) {
-            await message.channel.send('```ini\n[ Seojin ]\n\nFailed to retrieve server info. Please try again later.\n```');
+            await message.channel.send('```ini\n[ Seojin ]\n\nFailed to retrieve server info. Please try again later.\n\n[ https://github.com/3d1th ]```');
             danger(`Failed to resolve ${domain}: ${error.message}`);
         }
     }

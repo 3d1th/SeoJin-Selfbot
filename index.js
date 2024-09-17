@@ -9,6 +9,8 @@ import { handleCommand as handleWebhookCommand } from './kommand/webhook.js';
 import { setupSpy } from './func/spy.js';
 import player from 'node-wav-player';
 import { resolveServer } from './kommand/resolve.js'; 
+import { handleCommand as handleHelpCommand } from './kommand/help.js';
+import { handleCommand as handleIpLookupCommand } from './kommand/ipinfo.js';
 
 const configPath = './config.json';
 const toast = new Toast();
@@ -78,9 +80,15 @@ async function startBot() {
     });
 
     client.on('messageCreate', async message => {
-        await handlePingCommand(client, message, prefix);  // 명령어 처리
+        if (message.author.id !== client.user.id) {
+            return; 
+        }
+
+        await handlePingCommand(client, message, prefix);
         await handleWebhookCommand(client, message, prefix);
         await resolveServer(client, message, prefix);
+        await handleHelpCommand(client, message, prefix);
+        await handleIpLookupCommand(client, message, prefix);
     });
 
     try {
