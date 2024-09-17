@@ -23,11 +23,11 @@ export async function handleCommand(client, message, prefix) {
 
         } catch (error) {
             if (error.code === 50013) {
-                const errorMessage = '❌ You do not have permission to create a webhook.';
+                const errorMessage = '```ini\n[ Seojin ]\n\n❌ You do not have permission to create a webhook.\n```';
                 danger(errorMessage);
                 await message.channel.send(errorMessage);
             } else {
-                const errorMessage = `❌ An error occurred while creating the webhook: ${error.message}`;
+                const errorMessage = `\`\`\`ini\n[ Seojin ]\n\n❌ An error occurred while creating the webhook: ${error.message}\n\`\`\``;
                 danger(errorMessage);
                 await message.channel.send(errorMessage);
             }

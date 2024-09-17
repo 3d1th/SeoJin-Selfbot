@@ -1,5 +1,5 @@
-import { notify } from '../func/logfunc.js';
-
+import { notify, success, rog } from '../func/logfunc.js';
+import seojin from '../func/message.js';
 export async function handleCommand(client, message, prefix) {
     if (message.content.startsWith(`${prefix}ping`)) {
 
@@ -7,7 +7,7 @@ export async function handleCommand(client, message, prefix) {
 
         const ping = Math.round(client.ws.ping);
 
-        await message.channel.send(`🏓 Pong! 현재 핑: ${ping}ms`);
-        notify('used ping command');
+        await seojin.send(message, `🏓 Pong! Current ping: ${ping}ms`);
+        rog('used ping command');
     }
 }

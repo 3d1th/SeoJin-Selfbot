@@ -43,6 +43,10 @@ export async function success(msg) {
     console.log(`${chalk.gray(`[${getTime()}]`)} ${chalk.green('[SUCCESS]')} ${chalk.white(msg)}`);
 }
 
+export async function rog(msg) {
+    console.log(`${chalk.gray(`[${getTime()}]`)} ${chalk.blue('[NOTIFY]')} ${chalk.white(msg)}`);
+}
+
 export async function info(msg) {
     console.log(`${chalk.gray(`[${getTime()}]`)} ${chalk.cyan('[INFO]')} ${chalk.white(msg)}`);
     try {
